@@ -13,15 +13,3 @@ describe('GET /api/v1', () => {
       }, done);
   });
 });
-
-describe('GET /api/v1/helloworld', () => {
-  it('responds with a json message', (done) => {
-    request(app)
-      .get('/api/v1/helloworld')
-      .set('Accept', 'application/json')
-      .expect('Content-Type', /json/)
-      .expect(200, {
-        message: 'Hello World!'
-      }, done);
-  });
-});

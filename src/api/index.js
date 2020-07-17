@@ -1,6 +1,6 @@
 const express = require('express');
 
-const helloworld = require('./helloworld');
+const record = require('./record');
 
 const router = express.Router();
 
@@ -10,6 +10,6 @@ router.get('/', (req, res) => {
   });
 });
 
-router.use('/helloworld', helloworld);
+router.use('/record', record);
 
 module.exports = router;
