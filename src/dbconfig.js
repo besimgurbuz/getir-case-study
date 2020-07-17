@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const randomKey = require('random-key');
-const Record = require('./model/record');
+const RecordModel = require('./model/record-model');
 
 const { DB_USERNAME, DB_PASSWORD } = process.env;
 
@@ -22,7 +22,7 @@ function connect() {
  * Generates randomly filled record and saves to DB
  * @param {mongoose.Model} RecordModel
  */
-function createRandomRecord(RecordModel) {
+function createRandomRecord() {
   // createdAt is assigned as a random date in 2019
   const key = randomKey.generate();
   const createdAt = new Date(2019, (Math.random() * 11) + 1, (Math.random() * 29) + 1).toISOString();
@@ -41,10 +41,8 @@ function createRandomRecord(RecordModel) {
  */
 function initSchema() {
   const conn = mongoose.connection;
+  // be sure connection success
   conn.once('open', async () => {
-    // connected to DB
-    const recordSchema = new mongoose.Schema(Record);
-    const RecordModel = mongoose.model('Record', recordSchema);
     // if there is no any Record data in DB, add random generated samples
     const records = await RecordModel.find();
     if (records.length === 0) {

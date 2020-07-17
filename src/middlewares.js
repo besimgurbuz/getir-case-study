@@ -9,9 +9,10 @@ function errorHandler(err, req, res, next) {
   /* eslint-disable no-unused-vars */
   const statusCode = res.statusCode !== 200 ? res.statusCode : 500;
   res.status(statusCode);
+
   res.json({
-    status: 'error',
-    message: err.message
+    code: 'Fail',
+    msg: err.message
   });
 }
 
@@ -37,6 +38,7 @@ function recordRequestBodyValidator(req, res, next) {
   }
 
   if (validationResult.message) {
+    validationResult.code = 1;
     next(validationResult);
   } else {
     next();
