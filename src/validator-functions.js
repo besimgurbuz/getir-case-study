@@ -41,7 +41,9 @@ function isNumber(value) {
  * @param {any} value
  */
 function isDate(value) {
-  return (new Date(value) !== "Invalid Date") && !isNaN(new Date(value));
+  /* eslint-disable no-restricted-globals */
+  return (new Date(value) !== 'Invalid Date') && !isNaN(new Date(value));
+  /* eslint-disable no-restricted-globals */
 }
 
 module.exports = {

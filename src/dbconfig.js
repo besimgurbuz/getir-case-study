@@ -25,12 +25,14 @@ function connect() {
 function createRandomRecord() {
   // createdAt is assigned as a random date in 2019
   const key = randomKey.generate();
+  /* eslint-disable max-len */
   const createdAt = new Date(2019, (Math.random() * 11) + 1, (Math.random() * 29) + 1).toISOString();
+  /* eslint-disable max-len */
   const totalCount = Math.floor(Math.random() * 1000) + 2000;
 
   const newRecord = new RecordModel({ key, createdAt, totalCount });
 
-  newRecord.save(function (err, savedValue) {
+  newRecord.save((err, savedValue) => {
     if (err) console.error(err);
     else console.log(`Value saved - ${savedValue}`);
   });
@@ -46,12 +48,14 @@ function initSchema() {
     // if there is no any Record data in DB, add random generated samples
     const records = await RecordModel.find();
     if (records.length === 0) {
+      /* eslint-disable no-plusplus */
       for (let i = 0; i < 5; i++) {
+      /* eslint-disable no-plusplus */
         createRandomRecord(RecordModel);
       }
     }
   });
-  conn.on('error', err => {
+  conn.on('error', (err) => {
     console.error(err);
   });
 }

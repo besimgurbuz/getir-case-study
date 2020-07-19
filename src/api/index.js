@@ -10,6 +10,6 @@ router.get('/', (req, res) => {
   });
 });
 
-router.use('/record', record);
+router.use('/records', record);
 
 module.exports = router;

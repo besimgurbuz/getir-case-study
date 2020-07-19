@@ -1,8 +1,18 @@
 const validatorFunctions = require('./validator-functions');
 
+/**
+ * This middleware works when 404 situation happened.
+ * It triggers errorHandler with not found message
+ * @param {Request} req
+ * @param {Response} res
+ * @param {import('express').NextFunction} next
+ */
 function notFound(req, res, next) {
   res.status(404);
-  const error = new Error(`Aranılan adres bulunamadı - ${req.originalUrl}`);
+  const error = {
+    message: `Aranılan adres bulunamadı - ${req.originalUrl}`,
+    code: 404
+  };
   next(error);
 }
 
@@ -10,16 +20,25 @@ function notFound(req, res, next) {
 function errorHandler(err, req, res, next) {
   /* eslint-disable no-unused-vars */
   const statusCode = res.statusCode !== 200 ? res.statusCode : 500;
-  res.status(statusCode);
+  res.status(err.statusCode ? err.statusCode : statusCode);
 
   res.json({
-    code: -1,
+    code: err.statusCode || err.code,
     msg: err.message
   });
 }
 
+/**
+ * This middleware checks record POST method request body.
+ * If body is not valid triggers errorHandler with error message.
+ * @param {Request} req
+ * @param {Response} res
+ * @param {import('express').NextFunction} next
+ */
 function recordRequestBodyValidator(req, res, next) {
-  const { startDate, endDate, minCount, maxCount } = req.body;
+  const {
+    startDate, endDate, minCount, maxCount
+  } = req.body;
   const validationResult = {};
 
   const requirments = [
@@ -65,14 +84,18 @@ function recordRequestBodyValidator(req, res, next) {
     }
   ];
 
+  /* eslint-disable no-restricted-syntax */
   for (const requirment of requirments) {
     if (!requirment.func) {
       validationResult.message = requirment.error;
       break;
     }
   }
+  /* eslint-disable no-restricted-syntax */
 
   if (validationResult.message) {
+    res.status(400);
+    validationResult.code = -1;
     next(validationResult);
   } else {
     next();

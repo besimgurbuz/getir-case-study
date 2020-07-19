@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-
+// with dotenv config() function call app will able to use .env variables
 require('dotenv').config();
 
 const middlewares = require('./middlewares');
@@ -19,6 +19,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/v1', api);
 
+// middlewares
 app.use(middlewares.notFound);
 app.use(middlewares.errorHandler);
 
