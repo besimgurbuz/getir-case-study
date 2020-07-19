@@ -117,4 +117,4 @@ Application always responds in json. In this json, *code* property's value has m
 ## Live Demo
 Application running in the cloud with Heroku. <br>
 Go and play with it!
-[Live Application]("https://besimgurbuz-getir-case-study.herokuapp.com/")
+[Live Application](https://besimgurbuz-getir-case-study.herokuapp.com/)
