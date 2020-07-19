@@ -21,6 +21,7 @@ router.post('/', recordRequestBodyValidator, async (req, res, next) => {
     });
 
     res.json({
+      code: 0,
       msg: "Success",
       records: result
     });

@@ -1,0 +1,27 @@
+{
+  "code": 0,
+  "msg": "Success",
+  "records": [
+    {
+      "_id": "5f1202cde07f755646d22bb5",
+      "key": "xFTqSmgpPMpC0sB1",
+      "createdAt": "2019-11-09T21:00:00.000Z",
+      "totalCount": 2126,
+      "__v": 0
+    },
+    {
+      "_id": "5f1202cde07f755646d22bb6",
+      "key": "i3c2DhTA5ZB4hBLF",
+      "createdAt": "2019-12-04T21:00:00.000Z",
+      "totalCount": 2526,
+      "__v": 0
+    },
+    {
+      "_id": "5f1202cde07f755646d22bb7",
+      "key": "Ed04Wl2qOsCBeLLW",
+      "createdAt": "2019-11-13T21:00:00.000Z",
+      "totalCount": 2365,
+      "__v": 0
+    }
+  ]
+}

@@ -1,3 +1,5 @@
+const validatorFunctions = require('./validator-functions');
+
 function notFound(req, res, next) {
   res.status(404);
   const error = new Error(`Aranılan adres bulunamadı - ${req.originalUrl}`);
@@ -11,34 +13,66 @@ function errorHandler(err, req, res, next) {
   res.status(statusCode);
 
   res.json({
-    code: 'Fail',
+    code: -1,
     msg: err.message
   });
 }
 
 function recordRequestBodyValidator(req, res, next) {
-  const validator = require('validator');
-
   const { startDate, endDate, minCount, maxCount } = req.body;
   const validationResult = {};
 
-  // TODO make this mess beautiful
-  if (!validator.isDate(startDate)) {
-    validationResult.message = `'startDate' property should be in date format`;
-  } else if (!validator.isDate(endDate)) {
-    validationResult.message = `'endDate' property should be in date format`;
-  } else if (typeof minCount !== 'number') {
-    validationResult.message = `'minCount' property should be a number`;
-  } else if (typeof maxCount !== 'number') {
-    validationResult.message = `'maxCount' property should be a number`;
-  } else if (minCount > maxCount) {
-    validationResult.message = `'minCount' property cannot be greater than 'maxCount' property`
-  } else if (minCount === maxCount) {
-    validationResult.message = `'minCount' and 'maxCount' properties cannot be equal`;
+  const requirments = [
+    {
+      error: 'startDate should be given',
+      func: validatorFunctions.required(startDate)
+    },
+    {
+      error: 'endDate should be given',
+      func: validatorFunctions.required(endDate)
+    },
+    {
+      error: 'minCount should be given',
+      func: validatorFunctions.required(minCount)
+    },
+    {
+      error: 'maxCount should be given',
+      func: validatorFunctions.required(maxCount)
+    },
+    {
+      error: 'startDate should be in date format',
+      func: validatorFunctions.isDate(startDate)
+    },
+    {
+      error: 'endDate should be in date format',
+      func: validatorFunctions.isDate(endDate)
+    },
+    {
+      error: 'maxCount should be a number',
+      func: validatorFunctions.isNumber(maxCount)
+    },
+    {
+      error: 'minCount should be a number',
+      func: validatorFunctions.isNumber(minCount)
+    },
+    {
+      error: 'startDate must be older than endDate',
+      func: validatorFunctions.olderThan(startDate, endDate)
+    },
+    {
+      error: 'maxCount should be greater than minCount',
+      func: validatorFunctions.greaterThan(maxCount, minCount)
+    }
+  ];
+
+  for (const requirment of requirments) {
+    if (!requirment.func) {
+      validationResult.message = requirment.error;
+      break;
+    }
   }
 
   if (validationResult.message) {
-    validationResult.code = 1;
     next(validationResult);
   } else {
     next();
